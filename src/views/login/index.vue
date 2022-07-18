@@ -8,7 +8,7 @@
       <el-divider>
         <p>账号密码登录</p>
       </el-divider>
-      <el-form :model="form" :rules="rules">
+      <el-form :model="form" :rules="rules" ref="loginform">
         <el-form-item prop="username">
           <el-input
             v-model="form.username"
@@ -21,24 +21,42 @@
             v-model="form.password"
             prefix-icon="Lock"
             placeholder="请输入密码"
+            suffix-icon="el-icon-s-goods"
+            type="password"
+            show-password
           />
         </el-form-item>
-        <el-button round>登录</el-button>
+        <el-button round @click="handleLoginSubmit">登录</el-button>
       </el-form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+const store = useStore()
+const router = useRouter()
+const loginform = ref('')
 
 const rules = {
   username: { required: true, message: '请输入用户名', trigger: 'blur' },
   password: { required: true, message: '请输入密码', trigger: 'blur' }
 }
 const form = reactive({
-  name: ''
+  username: '',
+  password: ''
 })
+
+const handleLoginSubmit = () => {
+  loginform.value.validate(async (valid) => {
+    if (!valid) return
+    await store.dispatch('user/login', form)
+    store.dispatch('user/userInfo')
+    router.push('/')
+  })
+}
 </script>
 
 <style lang="scss" scoped>
