@@ -1,103 +1,107 @@
 <template>
-  <div class="login">
+  <div class="login-container">
     <div class="left">
-      <h1>欢迎光临</h1>
+      <span>欢迎光临</span>
     </div>
     <div class="right">
-      <h1>欢迎回来</h1>
-      <el-divider>
-        <p>账号密码登录</p>
-      </el-divider>
-      <el-form :model="form" :rules="rules" ref="loginform">
+      <h2>欢迎回来</h2>
+      <div class="a">
+        <span class="line">-----</span>
+        <span>账号密码登录</span>
+        <span class="line">-----</span>
+      </div>
+      <el-form
+        ref="LoginForm"
+        :rules="loginFormRules"
+        :model="loginForm"
+        label-position="right"
+      >
         <el-form-item prop="username">
           <el-input
-            v-model="form.username"
-            prefix-icon="User"
-            placeholder="请输入用户名"
-          />
+            v-model.trim="loginForm.username"
+            prefix-icon="user"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
-            v-model="form.password"
+            v-model.trim="loginForm.password"
             prefix-icon="Lock"
-            placeholder="请输入密码"
-            suffix-icon="el-icon-s-goods"
-            type="password"
             show-password
           />
         </el-form-item>
-        <el-button round @click="handleLoginSubmit">登录</el-button>
+        <el-form-item>
+          <el-button type="primary" @click="handleLoginSubmit">登录</el-button>
+        </el-form-item>
       </el-form>
     </div>
   </div>
 </template>
-
 <script setup>
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 const store = useStore()
 const router = useRouter()
-const loginform = ref('')
-
-const rules = {
-  username: { required: true, message: '请输入用户名', trigger: 'blur' },
-  password: { required: true, message: '请输入密码', trigger: 'blur' }
+const LoginForm = ref('')
+const loginFormRules = {
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
-const form = reactive({
-  username: '',
+const loginForm = reactive({
+  username: 'admin',
   password: ''
 })
 
 const handleLoginSubmit = () => {
-  loginform.value.validate(async (valid) => {
+  LoginForm.value.validate(async (valid) => {
     if (!valid) return
-    await store.dispatch('user/login', form)
-    store.dispatch('user/userInfo')
+    await store.dispatch('user/login', loginForm)
+    await store.dispatch('user/userInfo')
     router.push('/')
   })
 }
 </script>
-
 <style lang="scss" scoped>
-.login {
+.login-container {
   display: flex;
   width: 100%;
   height: 100%;
-}
-.left {
-  width: 68%;
-  height: 100%;
-  background-color: #6366f1;
-  text-align: center;
-
-  h1 {
-    color: white;
-    font-size: 50px;
-    margin-top: 30%;
-  }
-}
-.right {
-  width: 32%;
-  height: 100%;
-  text-align: center;
-  h1 {
-    margin-top: 50%;
-  }
-  .el-divider {
-    width: 300px;
-    margin-left: 20%;
-    p {
-      color: #d1d8e4;
+  .left {
+    width: 66%;
+    height: 100%;
+    background-color: #6366f1;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    span {
+      font-weight: 700;
+      font-size: 3rem;
+      line-height: 1;
+      color: white;
     }
   }
-  .el-form {
-    width: 250px;
-    margin-left: 125px;
+  .right {
+    width: 34%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+
+    h2 {
+      font-weight: 700;
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+      margin-bottom: 20px;
+    }
+    span {
+      --tw-text-opacity: 1;
+      color: rgba(209, 213, 219, var(--tw-text-opacity));
+    }
     .el-button {
-      width: 250px;
-      background-color: #6366f1;
-      color: white;
+      width: 100%;
+      background-color: #9197f4;
+      border-radius: 50px;
+      margin-top: 20px;
     }
   }
 }

@@ -1,6 +1,7 @@
-const getters = {
+export default {
   token: (state) => state.user.token,
-  userInfo: (state) => state.user.userInfo
+  userinfo: (state) => state.user.userinfo,
+  menus: (state) => state.user.userinfo.menus,
+  isCollapse: (state) => state.menu.isCollapse,
+  tagsView: (state) => state.tagsView.tags
 }
-
-export default getters

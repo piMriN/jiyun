@@ -1,26 +1,26 @@
 import UserApi from '../../api/user'
-import { setItem, getItem, removeItem } from '../../utiles/storage'
+import { setItem, getItem, removeAllItem } from '../../utils/storage'
+
 export default {
   namespaced: true,
   state: () => ({
     token: getItem('token') || '',
-    userInfo: getItem('userInfo') || {}
+    userinfo: {}
   }),
   mutations: {
     setToken(state, token) {
       state.token = token
       setItem('token', token)
     },
-    setuserInfo(state, userInfo) {
-      state.userInfo = userInfo
-      setItem('userInfo', userInfo)
+    setUserInfo(state, userinfo) {
+      state.userinfo = userinfo
     }
   },
   actions: {
     async login({ commit }, payload) {
       try {
         const response = await UserApi.login(payload)
-        console.log(response, '123')
+        console.log(response)
         commit('setToken', response.token)
         return response
       } catch (error) {
@@ -36,10 +36,13 @@ export default {
         console.log(error)
       }
     },
-    logout({ commit }) {
-      commit('setToken', '')
-      commit('setUserInfo', '')
-      removeItem()
+    async logout({ commit }) {
+      try {
+        await UserApi.logout()
+        commit('setToken', '')
+        commit('setUserInfo', '')
+        removeAllItem()
+      } catch (error) {}
     }
   }
 }

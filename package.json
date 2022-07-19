@@ -1,5 +1,5 @@
 {
-  "name": "jiyun",
+  "name": "shixun2-5",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,13 +13,16 @@
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
     "element-plus": "^2.2.9",
+    "screenfull": "^6.0.2",
     "vue": "^3.2.13",
+    "vue-fragment": "^1.6.0",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
